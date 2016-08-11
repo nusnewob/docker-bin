@@ -1,9 +1,9 @@
 FROM docker:1.11
 
 ENV DOCKER_BASE_VERSION=0.0.4
-
 ENV DOCKER_ARCH=x86_64
 ENV DOCKER_VERSION=latest
+ENV DOCKER_COMPOSE_VERSION=1.8.0
 
 RUN apk add --no-cache ca-certificates gnupg openssl && \
     gpg --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C && \
@@ -22,6 +22,7 @@ RUN apk add --no-cache ca-certificates gnupg openssl && \
     rm -rf /root/.gnupg
 
 RUN mkdir -p /opt/docker && curl -o - "https://get.docker.com/builds/Linux/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz" | tar -xzf - -C /opt
+RUN curl -o /opt/docker/docker-compose "https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m`"
 VOLUME /opt/docker
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
